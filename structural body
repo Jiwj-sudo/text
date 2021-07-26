@@ -1,0 +1,45 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <bits/stdc++.h>
+#define N 5
+
+using namespace std;
+
+struct book
+{
+	char id[6];			//图书编号
+	char name[31];		//书名
+	float price = 0;		//单价
+	string author;		//作者
+};
+typedef struct book bookStru;
+int main()
+{
+	bookStru b[N], * p;
+	int n;
+	p = b;
+	printf("请输入图书数量:");
+	cin >> n;
+	if (n < N)
+	{
+		printf("请按以下格式输入%d本图书的信息(用Tab键分隔):\n", n);
+		printf("编号	图书名称			单价	作者\n");
+		while (p < b + n)
+		{
+			cin >> p->id;						//输入图书编号
+			fgets(p->name, 31, stdin);				//输入图书名称
+			scanf("%f", &p->price);				//输入图书单价
+			getline(cin, p->author);			//输入图书作者
+			p++;
+		}
+		printf("编号	图书名称			单价	作者\n");
+		printf("-------------------------------------------------------\n");
+		for (p = b; p < b + n; p++)
+		{
+			printf("%s", p->id);
+			printf("%s", (*p).name);
+			printf("%10.2f", (*p).price);
+			cout << p->author << endl;
+		}
+	}
+	return 0;
+}
