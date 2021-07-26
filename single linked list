@@ -1,0 +1,127 @@
+#define _CRT_SECURE_NO_WARNINGS 1
+#include <bits/stdc++.h>
+
+using namespace std;
+
+struct node
+{
+	int data;
+	struct node* next;
+};
+typedef struct node linknode;
+typedef linknode* linklist;
+/*
+	@函数名称:creatLink		入口参数:无
+	@函数功能:建立单链表,函数返回单链表首节点地址
+*/
+linklist creatLink()
+{
+	linklist head, tail, q;
+	int x;
+	head = tail = NULL;			//初始化空链表
+	printf("请输入整数序列（以空格分开，以0作为结束）:\n");
+	cin >> x;
+	while (x != 0)
+	{
+		q = (linklist)malloc(sizeof(linknode));		//生成新节点
+		q->data = x;								
+		if (head == NULL)							//原链表为空
+			head = tail = q;
+		else                                        //原链表不为空
+		{
+			tail->next = q;
+			tail = q;
+		}
+		cin >> x;
+	}
+	if (tail != NULL)								//置链表结束标志
+		tail->next = NULL;
+	return head;
+}
+/*
+	@函数名称:print		入口参数:linklist head
+	@函数功能:输出单链表内容
+*/
+void print(linklist head)
+{
+	linklist p = head;
+	printf("List:\n");
+	while (p != NULL)
+	{
+		printf("%5d", p->data);
+		p = p->next;
+	}
+	printf("\n");
+}
+/*
+	@函数名称:searchLink	入口参数:linklist head, int x
+	@函数功能:在链表head中查找值为x的结点
+	@出口参数:若查找成功，函数返回结点地址，查找失败返回NULL
+*/
+linklist searchLink(linklist head, int x)
+{
+	linklist p = head;
+	while (p != NULL && p->data != x)
+		p = p->next;
+	return p;
+}
+/*
+	@函数名称:deleteList	入口参数:linklist head, int x
+	@函数功能:在链表head中删除第一个值为x的结点
+	@出口参数:返回删除后的链表首结点地址
+*/
+linklist deleteList(linklist head, int x)
+{
+	linklist pre, p;
+	pre = NULL;
+	p = head;
+	while (p != NULL && p->data != x)   //查找第一个值为x的结点，并用pre保存其前驱位置
+	{
+		pre = p;
+		p = p->next;
+	}
+	if (p)			//	查找成功
+	{
+		if (pre == NULL)		//情况一:被删除的结点是链表的第一个结点
+			head = head->next;
+		else                    //情况二:被删除的结点不是链表的第一个结点
+			pre->next = p->next;
+		free(p);
+	}
+	return head;
+}
+/*
+	@函数名称:linkfree	入口参数:linklist head
+	@函数功能:释放单链表的全部结点空间
+*/
+linklist linkfree(linklist head)
+{
+	linklist p;
+	while (head != NULL)
+	{
+		p = head;
+		head = head->next;
+		free(p);
+	}
+}
+int main()
+{
+	linklist head, p;
+	int x;
+	head = creatLink();
+	//cout << head << endl;
+	print(head);
+	printf("请输入要查找的结点值:");
+	cin >> x;
+	p = searchLink(head, x);
+	if (p != NULL)
+		printf("查找成功!\n");
+	else
+		printf("查找失败!\n");
+	printf("请输入要删除的结点值:");
+	cin >> x;
+	head = deleteList(head, x);
+	print(head);
+	linkfree(head);
+	return 0;
+}
