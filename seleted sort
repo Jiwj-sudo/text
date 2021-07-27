@@ -1,0 +1,12 @@
+"""选择排序"""
+alist = [13, 6, 25, 9, 78, 49, 21, 35, 12, 2]
+max_index = 0
+length = len(alist)
+
+for i in range(length-1):
+    for j in range(length-i):
+        if alist[j] > alist[max_index]:
+            max_index = j
+    alist[length-i-1],alist[max_index] = alist[max_index],alist[length-i-1]
+    max_index = 0
+print(alist)
